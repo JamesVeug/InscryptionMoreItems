@@ -1,0 +1,11 @@
+{
+    "name": "MoreItems",
+    "version_number": "0.2.0",
+    "website_url": "",
+    "description": "Adds more consumable items",
+    "dependencies": [
+        "BepInEx-BepInExPack_Inscryption-5.4.1902",
+        "API_dev-API-2.7.0",
+        "MADH95Mods-JSONCardLoader-2.1.0"
+    ]
+}
