@@ -107,11 +107,13 @@ internal class CardStatBoostSequencer_StatBoostSequence_Patch
     }
 }
 
-/// <summary>
-/// Adds brittle to all cards on the board
-/// </summary>
+
 public class SaveFromFlameConsumableItem : ConsumableItem
 {
+    /// <summary>
+    /// TODO: Enable press D to look at items
+    /// </summary>
+    /// <returns></returns>
     public override IEnumerator ActivateSequence()
     {
         this.PlayExitAnimation();

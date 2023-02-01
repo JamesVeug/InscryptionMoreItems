@@ -24,7 +24,7 @@ namespace MoreItemsMod
     {
 	    public const string PluginGuid = "jamesgames.inscryption.moreitems";
 	    public const string PluginName = "More Items";
-	    public const string PluginVersion = "0.2.0.0";
+	    public const string PluginVersion = "0.3.0.0";
 
 	    public static string PluginDirectory;
 	    public static ManualLogSource Log;
@@ -94,6 +94,10 @@ namespace MoreItemsMod
 	        CreateMycoSawItem();
 	        CreateCardPackItem();
 	        CreateMrsBombItem();
+	        CreateQuilItem();
+	        CreateSurvivorItem();
+	        CreateTeethJarItem();
+	        CreateTrapItem();
         }
 
 	    private void CreateMrsBombItem()
@@ -101,6 +105,29 @@ namespace MoreItemsMod
 		    // component uses: BombRemoteItem
 		    GameObject prefab = Resources.Load<GameObject>("prefabs/items/BombRemoteItem");
 		    MakeItem("Mrs. Bomb's Remote", "Places Explode Bots on all empty spaces. Pretty annoying honestly.", "Art/rulebookitemicon_remotebomb.png", typeof(BombRemoteItem), prefab, "Mrs. Bomb's Remote. Click that thing and Explode Bots will drop in every open space.");
+	    }
+
+	    private void CreateQuilItem()
+	    {
+		    GameObject parent = new GameObject("QuillItem");
+		    GameObject animation = new GameObject("Anim");
+		    animation.AddComponent<Animator>();
+		    animation.transform.SetParent(parent.transform);
+		    GameObject model = GameObject.Instantiate(Resources.Load<GameObject>("prefabs/map/mapnodespart3/PickupQuillNode3D"));
+		    model.transform.localScale = Vector3.one * 4f;
+		    model.transform.localPosition = new Vector3(0, 0.071f, 0);
+		    
+		    model.FindChild("Quill").transform.localEulerAngles = new Vector3(-50, 0, 0);
+		    Destroy(model.GetComponent<HoloMapPickupQuillNode>());
+		    Destroy(model.GetComponent<Collider>());
+		    Destroy(model.GetComponent<Animator>());
+		    Destroy(model.GetComponentInChildren<SineWaveMovement>());
+		    Destroy(model.GetComponentInChildren<AutoRotate>());
+		    Destroy(model.FindChild("Glow"));
+		    Destroy(model.FindChild("HoloPickupAnim"));
+		    model.transform.SetParent(animation.transform);
+	        
+		    MakeItem("Quill", "Returns the last friendly card that perished card to your hand", "Art/rulebookitemicon_quil.png", typeof(PupilsQuillConsumableItem), parent, "");
 	    }
 
 	    private void CreateMycoSawItem()
@@ -118,9 +145,38 @@ namespace MoreItemsMod
 			    modelType, "A temporary abomination if I ever 'saw' one.");
 	    }
 
+	    private void CreateSurvivorItem()
+	    {
+		    AssetBundle loadFromFile = AssetBundle.LoadFromFile(Path.Combine(PluginDirectory, "AssetBundles/survivoritem"));
+		    GameObject prefab = loadFromFile.LoadAsset<GameObject>("SurvivorItem");
+		    ConsumableItemResource resource = new ConsumableItemResource();
+		    resource.FromPrefab(prefab);
+		    
+		    ConsumableItemManager.ModelType modelType = ConsumableItemManager.RegisterPrefab(PluginGuid, "SurvivorItem", resource);
+
+		    MakeItem("Survivor", "Choose a card on the board to have a chance to either be destroyed or buffed.", 
+			    "Art/rulebookitemicon_survivor.png",
+			    typeof(SurvivorConsumableItem), 
+			    modelType, "");
+	    }
+
+	    private void CreateTeethJarItem()
+	    {
+		    AssetBundle loadFromFile = AssetBundle.LoadFromFile(Path.Combine(PluginDirectory, "AssetBundles/teethjaritem"));
+		    GameObject prefab = loadFromFile.LoadAsset<GameObject>("TeethJar");
+		    ConsumableItemResource resource = new ConsumableItemResource();
+		    resource.FromPrefab(prefab);
+		    
+		    ConsumableItemManager.ModelType modelType = ConsumableItemManager.RegisterPrefab(PluginGuid, "TeethJar", resource);
+
+		    MakeItem("Teeth Jar", "Adds 10 teeth to your currency bowl. Does not get added to your scales.", 
+			    "Art/rulebookitemicon_teethjar.png",
+			    typeof(TeethJarConsumableItem), 
+			    modelType, "");
+	    }
+
 	    private void CreateCardPackItem()
 	    {
-		    
 		    AssetBundle loadFromFile = AssetBundle.LoadFromFile(Path.Combine(PluginDirectory, "AssetBundles/cardpackitem"));
 		    GameObject prefab = loadFromFile.LoadAsset<GameObject>("CardPackItem");
 		    if (prefab == null)
@@ -159,7 +215,27 @@ namespace MoreItemsMod
 		        Resources.Load<Material>("art/assets3d/cabin/meat/Meat_PlateAndCandle")
 	        };
 	        
-	        MakeItem("Meat Cake", "Still fresh", "Art/rulebookitemicon_meatpile.png", typeof(MeatCakeConsumableItem), meatPile, "In case you change your mind");
+	        MakeItem("Meat Cake", "Relights a candle if you have lost a battle. Does not work during boss battles.", "Art/rulebookitemicon_meatpile.png", typeof(MeatCakeConsumableItem), meatPile, "In case you change your mind");
+        }
+
+        private void CreateTrapItem()
+        {
+	        AssetBundle loadFromFile = AssetBundle.LoadFromFile(Path.Combine(PluginDirectory, "AssetBundles/trapitem"));
+	        GameObject prefab = loadFromFile.LoadAsset<GameObject>("TrapItem");
+	        if (prefab == null)
+	        {
+		        Logger.LogError("Trap wasn't loaded from cardpackitem bundle!");
+	        }
+		    
+	        ConsumableItemResource resource = new ConsumableItemResource();
+	        resource.FromPrefab(prefab);
+		    
+	        ConsumableItemManager.ModelType modelType = ConsumableItemManager.RegisterPrefab(PluginGuid, "Trap", resource);
+
+	        MakeItem("Trap", "Adds a rabbit and pelts to your hand.", 
+		        "Art/rulebookitemicon_cardpack.png",
+		        typeof(TrapConsumableItem), 
+		        modelType, "");
         }
 
         private void CreatePickaxeItem()
@@ -212,18 +288,15 @@ namespace MoreItemsMod
 	        ConsumableItemManager.New(PluginGuid, rulebookName, rulebookDescription, texture, type, prefab)
 		        .SetLearnItemDescription(learnText)
 		        .SetAct1();
-	        Logger.LogInfo("[Red Totem Mod] MakeItem " + rulebookName);
         }
 
         private ConsumableItemData MakeItem(string rulebookName, string rulebookDescription, string texturePath, Type type, ConsumableItemManager.ModelType modelType, string learnText=null)
         {
-	        Logger.LogInfo("[Red Totem Mod] Making Item " + rulebookName);
 	        string path = Path.Combine(PluginDirectory, texturePath);
 	        Texture2D texture = TextureHelper.GetImageAsTexture(path);
 	        ConsumableItemData data = ConsumableItemManager.New(PluginGuid, rulebookName, rulebookDescription, texture, type, modelType)
 		        .SetLearnItemDescription(learnText)
 		        .SetAct1();
-	        Logger.LogInfo("[Red Totem Mod] Made Item " + data.rulebookName);
 	        return data;
         }
 

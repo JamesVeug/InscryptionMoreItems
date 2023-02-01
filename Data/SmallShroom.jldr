@@ -1,0 +1,17 @@
+{
+  "name": "JSON_SmallShroom",
+  "modPrefix": "MoreItems",
+  "displayedName": "Small Shroom",
+  "baseAttack": 0,
+  "baseHealth": 6,
+  "bonesCost": 0,
+  "energyCost": 0,
+  "abilities": [],
+  "metaCategories": [],
+  "cardComplexity": "Simple",
+  "temple": "Nature",
+  "description": "",
+  "texture": "JamesGames-ZergMod/Artwork/Cards/baneling.png",
+  "emissionTexture": "JamesGames-ZergMod/Artwork/Cards/baneling_emit.png",
+  "tribes": ["Insect"]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "JSON_MealShroom",
+  "modPrefix": "MoreItems",
+  "displayedName": "Meal Shroom",
+  "baseAttack": 0,
+  "baseHealth": 1,
+  "bonesCost": 0,
+  "energyCost": 0,
+  "abilities": ["Morsel"],
+  "metaCategories": [],
+  "cardComplexity": "Simple",
+  "temple": "Nature",
+  "description": "",
+  "texture": "JamesGames-ZergMod/Artwork/Cards/baneling.png",
+  "emissionTexture": "JamesGames-ZergMod/Artwork/Cards/baneling_emit.png",
+  "tribes": ["Insect"]
+}

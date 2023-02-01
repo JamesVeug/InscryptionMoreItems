@@ -1,0 +1,17 @@
+{
+  "name": "JSON_LargeShroom",
+  "modPrefix": "MoreItems",
+  "displayedName": "Large Shroom",
+  "baseAttack": 0,
+  "baseHealth": 4,
+  "bonesCost": 0,
+  "energyCost": 0,
+  "abilities": ["PreventAttack"],
+  "metaCategories": [],
+  "cardComplexity": "Simple",
+  "temple": "Nature",
+  "description": "",
+  "texture": "JamesGames-ZergMod/Artwork/Cards/baneling.png",
+  "emissionTexture": "JamesGames-ZergMod/Artwork/Cards/baneling_emit.png",
+  "tribes": ["Insect"]
+}
